@@ -7,7 +7,7 @@ in case of a system crash.
 First, edit the script variables to suit your needs. See section variables.
 Invoke the command with:
 ```sh
-$ i3-mngr.sh load|save [NAME]
+$ i3-smanager.sh load|save [NAME]
 ```
 Where NAME is the optional argument asking for the calling name of the workspace we want to save.
 
