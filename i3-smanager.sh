@@ -1,6 +1,7 @@
 #!/bin/bash
 
 attributes=( class instance ) #json attributes we wish to automatically uncomment
+blacklist=( 2 3 ) #workspace blacklist: which workspaces to ignore entirely when saving "all" workspaces
 sessiondir=~/.i3-sessions
 format=$sessiondir/session$2.json
 
@@ -13,6 +14,11 @@ workspaces=$(i3-msg -t get_workspaces | sed -e "s/,/\n/g" | grep name | sed -e "
 if [[ $1 == "save" ]]; then
 	if [[ $2 == "" ]]; then
 		for i in $workspaces; do
+			for j in ${blacklist[@]}; do
+				if [[ $i == $j ]]; then
+					break 2
+				fi
+			done
 			i3-save-tree --workspace=$i > $sessiondir/session$i.json
 			for j in ${attributes[@]}; do
 				sed -i "s/\/\/ \"$j\"/\"$j\"/" $sessiondir/session$i.json
