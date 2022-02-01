@@ -15,17 +15,15 @@ if [[ $1 == "save" ]]; then
 		for i in $workspaces; do
 			i3-save-tree --workspace=$i > $sessiondir/session$i.json
 			for j in ${attributes[@]}; do
-				#echo $j
 				sed -i "s/\/\/ \"$j\"/\"$j\"/" $sessiondir/session$i.json
 			done
-			#echo ${attributes[-1]}
-			cat $sessiondir/session$i.json | grep -E "\"${attributes[-1]}\": \".+\""
 			sed -E -i "s/(\"${attributes[-1]}\": \".+\"),/\1/" $sessiondir/session$i.json
 		done
 	else
 		i3-save-tree --workspace=$2 > $format
-		for i in $attributes; do
+		for i in ${attributes[@]}; do
 			sed -i "s/\/\/ \"$i\"/\"$i\"/" $format
+			sed -E -i "s/(\"${attributes[-1]}\": \".+\"),/\1/" $format
 		done
 	fi
 elif [[ $1 == "load" ]]; then
@@ -34,7 +32,7 @@ elif [[ $1 == "load" ]]; then
 			i3-msg "workspace $i; append_layout $sessiondir/session$i.json"
 		done
 	else
-		i3-msg "workspace $1; append_layout $format"
+		i3-msg "workspace $2; append_layout $format"
 	fi	
 else
 	echo "no valid arguments passed"
