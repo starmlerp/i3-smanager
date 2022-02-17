@@ -16,7 +16,7 @@ if [[ $1 == "save" ]]; then
 		for i in $workspaces; do
 			for j in ${blacklist[@]}; do
 				if [[ $i == $j ]]; then
-					break 2
+					continue 2
 				fi
 			done
 			i3-save-tree --workspace=$i > $sessiondir/session$i.json
